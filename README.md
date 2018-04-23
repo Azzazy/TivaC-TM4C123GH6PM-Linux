@@ -9,4 +9,4 @@ To run normal file:
 	
 To run UART file and open the serial terminal:
 
-	sudo ./run.sh
+	sudo ./UART_run.sh
