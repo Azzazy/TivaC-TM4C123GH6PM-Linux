@@ -1,69 +1,51 @@
-/**
- * main.c
- */
-
-#include "inc/tm4c123gh6pm.h"
 #include <stdint.h>
-
-void UART0Tx(char c);
-void delayMs(int n);
-
-void UARTIntHandler(void)
-{
-
-}
+#include <stdbool.h>
+#include "inc/tm4c123gh6pm.h"
+#include "inc/hw_memmap.h"
+#include "inc/hw_types.h"
+#include "driverlib/sysctl.h"
+#include "driverlib/interrupt.h"
+#include "driverlib/gpio.h"
+#include "driverlib/timer.h"
+#include "driverlib/rom.h"
 
 int main(void)
 {
-   SYSCTL_RCGCUART_R |= 1; /* provide clock to UART0 */
-   SYSCTL_RCGCGPIO_R |= 1; /* enable clock to PORTA */
+	uint32_t ui32Period;
+	ROM_SysCtlClockSet(SYSCTL_SYSDIV_5|SYSCTL_USE_PLL|SYSCTL_XTAL_16MHZ|SYSCTL_OSC_MAIN);
 
-   /* UART0 initialization */
-   UART0_CTL_R = 0;        /* disable UART0 */
-   UART0_IBRD_R = 104;     /* 16MHz/16=1MHz, 1MHz/104=9600 baud rate */
-   UART0_FBRD_R = 11;      /* fraction part, see Example 4-4 */
-   UART0_CC_R = 0;         /* use system clock */
-   UART0_LCRH_R = 0x60;    /* 8-bit, no parity, 1-stop bit, no FIFO */
-   UART0_CTL_R = 0x301;    /* enable UART0, TXE, RXE */
-   /* UART0 TX0 and RX0 use PA0 and PA1. Set them up. */
-   GPIO_PORTA_DEN_R = 0x03;     /* Make PA0 and PA1 as digital */
-   GPIO_PORTA_AFSEL_R = 0x03;   /* Use PA0,PA1 alternate function */
-   GPIO_PORTA_PCTL_R = 0x11;    /* configure PA0 and PA1 for UART */
+	ROM_SysCtlPeripheralEnable(SYSCTL_PERIPH_GPIOF);
+	ROM_GPIOPinTypeGPIOOutput(GPIO_PORTF_BASE, GPIO_PIN_1|GPIO_PIN_2|GPIO_PIN_3);
 
-    delayMs(500);            /* wait for output line to stabilize */
+	ROM_SysCtlPeripheralEnable(SYSCTL_PERIPH_TIMER0);
+	ROM_TimerConfigure(TIMER0_BASE, TIMER_CFG_PERIODIC);
 
-   for(;;)
-   {
-       UART0Tx('Y');
-       UART0Tx('E');
-       UART0Tx('S');
-       UART0Tx(' ');
-   }
+	ui32Period = (ROM_SysCtlClockGet() / 10) / 2;
+	ROM_TimerLoadSet(TIMER0_BASE, TIMER_A, ui32Period -1);
+
+	ROM_IntEnable(INT_TIMER0A);
+	ROM_TimerIntEnable(TIMER0_BASE, TIMER_TIMA_TIMEOUT);
+	ROM_IntMasterEnable();
+
+	ROM_TimerEnable(TIMER0_BASE, TIMER_A);
+
+	while(1)
+	{
+	}
 }
 
-/* UART0 Transmit */
-/* This function waits until the transmit buffer is available then */
-/* writes the character in the transmit buffer. It does not wait */
-/* for transmission to complete. */
-
-/* delay n milliseconds (16 MHz CPU clock) */
-void delayMs(int n)
+void Timer0IntHandler(void)
 {
- int i, j;
- for(i = 0 ; i < n; i++)
- for(j = 0; j < 3180; j++)
-{} /* do nothing for 1 ms */
+	// Clear the timer interrupt
+	ROM_TimerIntClear(TIMER0_BASE, TIMER_TIMA_TIMEOUT);
+	// Read the current state of the GPIO pin and
+	// write back the opposite state
+	if(ROM_GPIOPinRead(GPIO_PORTF_BASE, GPIO_PIN_2))
+	{
+	 	ROM_GPIOPinWrite(GPIO_PORTF_BASE, GPIO_PIN_1|GPIO_PIN_2|GPIO_PIN_3, 0);
+	}
+	else
+	{
+	 	ROM_GPIOPinWrite(GPIO_PORTF_BASE, GPIO_PIN_2, 4);
+	}
 }
-
-void UART0Tx(char c)
-{
-  while((UART0_FR_R & 0x20) != 0); /* wait until Tx buffer not full */
-   UART0_DR_R = c;                 /* before giving it another byte */
-}
-
-/* Append delay functions and SystemInit() here */
-
-
-
-
-
