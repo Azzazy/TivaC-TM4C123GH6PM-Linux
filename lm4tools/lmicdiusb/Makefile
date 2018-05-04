@@ -60,7 +60,7 @@ VPATH += $(LIBUSB_LIBDIR)
 LDFLAGS += -L$(LIBUSB_LIBDIR) -g
 
 CFLAGS += -Wall -g $(LIBUSB_CFLAGS)
-
+	
 all: lmicdi
 
 lmicdi: lmicdi.o socket.o gdb.o $(LIBUSB_LIBS)
