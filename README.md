@@ -1,8 +1,12 @@
 TivaC TM4C123GH6PM Linux
 ==================
-
 ## Purpose
-This is an educational project to get up and running with the TivaC on Linux.
+This is an educational project to get up and running with the TivaC on Linux. This is part of the thesis project of:  
+- Dina Gamal
+- Mark Maurice
+- Mohamed Gamal
+- Muhammad Azzazy
+- Omar El-Kholy
 
 ## Resources
 - Thanks to [Chris Miller](http://chrisrm.com/howto-develop-on-the-ti-tiva-launchpad-using-linux/), and all the people he mentioned, for helping preparing the enviornment
@@ -14,10 +18,13 @@ This is an educational project to get up and running with the TivaC on Linux.
 	Ubuntu 18.04 (x64)
 	
 ## Running
-Go the directory where you unzipped and execute one of the following.  
-**To run normal file:**
-
-	sudo ./run.sh
-**To run UART file and open the serial terminal:**
-
-	sudo ./UART_run.sh
+1. Write your code in `src/main.c` 
+2. Update the intrrupts in  `src/startup_gcc.c`
+2. Go the directory where you unzipped and execute one of the following.  
+	**To run normal file:**
+	
+		sudo ./run.sh
+		
+	**To run UART file and open the serial terminal:**
+	
+		sudo ./UART_run.sh
