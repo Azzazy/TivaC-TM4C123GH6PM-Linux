@@ -1,7 +1,5 @@
 #!/bin/bash
-export PATH=$PATH:$HOME/Documents/Courses/ARM/workplace/gcc-arm-none-eabi-7-2017-q4-major/bin
-cd ~/Documents/Courses/ARM/workplace/
+export PATH=$PATH:$PWD/gcc-arm-none-eabi-7-2017-q4-major/bin
 sudo rm -r build/
 make
-cd ~/Documents/Courses/ARM/workplace/lm4flash/
-sudo ./lm4flash ~/Documents/Courses/ARM/workplace/build/main.bin
+sudo ./lm4flash/lm4flash /build/main.bin
