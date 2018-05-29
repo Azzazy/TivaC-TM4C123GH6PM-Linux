@@ -20,7 +20,7 @@ This is an educational project to get up and running with the TivaC on Linux. Th
 ## Running
 1. Write your code in `src/main.c` 
 2. Update the intrrupts in  `src/startup_gcc.c`
-2. Go the directory where you unzipped and execute one of the following.  
+2. Open the terminal where you unzipped and execute one of the following.  
 	**To run normal file:**
 	
 		sudo ./run.sh
