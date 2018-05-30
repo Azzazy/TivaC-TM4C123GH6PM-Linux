@@ -5,6 +5,7 @@
 #include "driverlib/rom.h"
 #include "driverlib/sysctl.h"
 #include "driverlib/gpio.h"
+#include "dmostd.c"
 
 void Lcd_command(unsigned char data)
 {
@@ -33,11 +34,16 @@ void Lcd_data(unsigned char data)
 void Lcd_Init()
 {
 	Lcd_command(0x38);
-	ROM_SysCtlDelay(4167);
-	Lcd_command(0x0c);
-	ROM_SysCtlDelay(4167);
+	delay(1000);
+	Lcd_command(0x38);
+	delay(1000);
+	Lcd_command(0x06);
+	delay(1000);
+	Lcd_command(0x0E);
+	delay(1000);
 	Lcd_command(0x01);
-	ROM_SysCtlDelay(4167);
+	delay(1000);
+	//0x38, 0x38, 0x06, 0x0E, 0x01
 }
 
 void Lcd_String_Display(unsigned char *str)
