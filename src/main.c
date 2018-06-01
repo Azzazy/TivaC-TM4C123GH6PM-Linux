@@ -11,7 +11,8 @@ void Lcd_command(unsigned char data)
 {
 	ROM_GPIOPinWrite(GPIO_PORTD_BASE, GPIO_PIN_0|GPIO_PIN_1,0x00);
 
-	ROM_GPIOPinWrite(GPIO_PORTB_BASE, GPIO_PIN_0|GPIO_PIN_1|GPIO_PIN_2|GPIO_PIN_3|GPIO_PIN_4|GPIO_PIN_5|GPIO_PIN_6|GPIO_PIN_7, data);//LCD data
+	//ROM_GPIOPinWrite(GPIO_PORTB_BASE, GPIO_PIN_0|GPIO_PIN_1|GPIO_PIN_2|GPIO_PIN_3|GPIO_PIN_4|GPIO_PIN_5|GPIO_PIN_6|GPIO_PIN_7, data);//LCD data
+	ROM_GPIOPinWrite(GPIO_PORTB_BASE, GPIO_PIN_4|GPIO_PIN_5|GPIO_PIN_6|GPIO_PIN_7, data);//LCD data
 	ROM_GPIOPinWrite(GPIO_PORTD_BASE, GPIO_PIN_0|GPIO_PIN_1,0x00);
 	ROM_SysCtlDelay(1000);
 	ROM_GPIOPinWrite(GPIO_PORTD_BASE, GPIO_PIN_0|GPIO_PIN_1,0x02);//enabling lcd by high to low pulse
@@ -23,7 +24,8 @@ void Lcd_data(unsigned char data)
 {
 	ROM_GPIOPinWrite(GPIO_PORTD_BASE, GPIO_PIN_0|GPIO_PIN_1,0x00);
 
-	ROM_GPIOPinWrite(GPIO_PORTB_BASE, GPIO_PIN_0|GPIO_PIN_1|GPIO_PIN_2|GPIO_PIN_3|GPIO_PIN_4|GPIO_PIN_5|GPIO_PIN_6|GPIO_PIN_7, data);//LCD data
+	//ROM_GPIOPinWrite(GPIO_PORTB_BASE, GPIO_PIN_0|GPIO_PIN_1|GPIO_PIN_2|GPIO_PIN_3|GPIO_PIN_4|GPIO_PIN_5|GPIO_PIN_6|GPIO_PIN_7, data);//LCD data
+	ROM_GPIOPinWrite(GPIO_PORTB_BASE, GPIO_PIN_4|GPIO_PIN_5|GPIO_PIN_6|GPIO_PIN_7, data);//LCD data
 	ROM_GPIOPinWrite(GPIO_PORTD_BASE, GPIO_PIN_0|GPIO_PIN_1,0x01);
 	ROM_SysCtlDelay(1000);
 	ROM_GPIOPinWrite(GPIO_PORTD_BASE, GPIO_PIN_0|GPIO_PIN_1,0x02);//enabling lcd by high to low pulse
@@ -46,7 +48,7 @@ void Lcd_Init()
 	//0x38, 0x38, 0x06, 0x0E, 0x01
 }
 
-void Lcd_String_Display(unsigned char *str)
+void Lcd_String_Display(char *str)
 {
 	while(*str)
 	{
